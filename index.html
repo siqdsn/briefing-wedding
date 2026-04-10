@@ -889,13 +889,12 @@
   <span class="footer-copy" style="opacity:0.4;">design com propósito</span>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script>
   // ── SUPABASE CONFIG ──────────────────────────────────────────
-  // Substitua pelos seus valores em https://supabase.com/dashboard
   const SUPABASE_URL = 'https://hslnuqqgcxhnvndxdpua.supabase.co';
   const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhzbG51cXFnY3hobnZuZHhkcHVhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ1NjgxNjksImV4cCI6MjA5MDE0NDE2OX0.muQLdA42DJOejrcvWCbc632FSlDyzXhBuSLL-11wnTg';
-  const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
   // ─────────────────────────────────────────────────────────────
 
   const TOTAL = 6;
@@ -1022,9 +1021,12 @@
     }
 
     try {
-      const { error } = await sb.from('briefings_casamento').insert([data]);
+      const { data, error } = await sb.from('briefings_casamento').insert([data]);
 
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase error:', JSON.stringify(error, null, 2));
+        throw new Error(error.message || JSON.stringify(error));
+      }
 
       // Sucesso
       document.getElementById('briefingForm').style.display = 'none';
@@ -1034,8 +1036,8 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
 
     } catch (err) {
-      console.error('Erro Supabase:', err);
-      alert('Ocorreu um erro ao enviar. Por favor, tente novamente ou entre em contato pelo WhatsApp.');
+      console.error('Erro completo:', err);
+      alert('Erro ao enviar: ' + err.message + '\n\nVeja o console (F12) para detalhes.');
       btn.disabled = false;
       btn.classList.remove('loading');
       btn.innerHTML = `Enviar Briefing <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;

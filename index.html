@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Briefing de Casamento — Siqueira Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,wght@0,300;0,400;1,300;1,400&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --primary: #665a4d;
+    --secondary: #5f5e5e;
+    --surface: #fef9ef;
+    --surface-low: #f8f3e9;
+    --surface-lowest: #ffffff;
+    --on-primary: #ffffff;
+    --outline-variant: rgba(102, 90, 77, 0.15);
+    --outline-focus: rgba(102, 90, 77, 0.5);
+    --text-dark: #1d1c16;
+    --accent: #9b8b7a;
+    --error: #8b4444;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--surface);
+    color: var(--text-dark);
+    font-family: 'Manrope', sans-serif;
+    font-weight: 400;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  /* ── PROGRESS ── */
+  .progress-bar {
+    position: fixed; top: 0; left: 0; height: 2px;
+    background: var(--primary); z-index: 200;
+    transition: width 0.2s ease;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(254,249,239,0.92);
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--outline-variant);
+    padding: 1.25rem 1.75rem;
+  }
+  .header-inner {
+    max-width: 560px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .logo {
+    font-family: 'Manrope', sans-serif; font-size: 0.68rem;
+    font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--primary);
+  }
+  .logo span { color: var(--secondary); font-weight: 300; }
+  .bookmark::before {
+    content: ''; display: block; width: 18px; height: 22px;
+    background: var(--primary); opacity: 0.65;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 78%, 0 100%);
+  }
+
+  /* ── HERO ── */
+  .hero {
+    max-width: 560px; margin: 0 auto;
+    padding: 3.5rem 1.75rem 1.5rem;
+    animation: fadeUp 0.7s ease forwards;
+  }
+  .hero-eyebrow {
+    font-size: 0.62rem; font-weight: 600;
+    letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 1.25rem;
+  }
+  .hero-title {
+    font-family: 'Roboto Serif', serif;
+    font-size: 2.4rem; font-weight: 300; line-height: 1.1;
+    letter-spacing: -0.02em; margin-bottom: 1.5rem;
+  }
+  .hero-title em {
+    font-style: italic;
+    background: linear-gradient(100deg,#665a4d 0%,#a08f7e 28%,#d4b896 48%,#a08f7e 68%,#665a4d 100%);
+    background-size: 220% auto;
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 4.5s ease-in-out infinite;
+  }
+  @keyframes shimmer {
+    0%   { background-position: 200% center; }
+    50%  { background-position: 0% center; }
+    100% { background-position: 200% center; }
+  }
+  .hero-sub {
+    font-size: 0.85rem; line-height: 1.75;
+    color: var(--secondary); max-width: 380px;
+  }
+
+  /* ── STEP INDICATOR ── */
+  .step-indicator {
+    max-width: 560px; margin: 0 auto;
+    padding: 1.5rem 1.75rem 0;
+    display: flex; align-items: center; gap: 0;
+  }
+  .step-pip {
+    flex: 1; height: 2px;
+    background: var(--outline-variant);
+    position: relative; transition: background 0.4s ease;
+  }
+  .step-pip.active { background: var(--primary); }
+  .step-pip.done { background: var(--primary); opacity: 0.4; }
+  .step-pip-label {
+    position: absolute; top: 8px; left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.55rem; font-weight: 600; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--accent);
+    white-space: nowrap; opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .step-pip.active .step-pip-label { opacity: 1; }
+
+  /* ── FORM SECTIONS ── */
+  .form-wrapper {
+    max-width: 560px; margin: 0 auto;
+    padding: 2rem 1.75rem 4rem;
+  }
+
+  .form-section {
+    display: none;
+    animation: fadeUp 0.5s ease forwards;
+  }
+  .form-section.active { display: block; }
+
+  .section-header {
+    margin-bottom: 2rem;
+  }
+  .section-num {
+    font-size: 0.58rem; font-weight: 700; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--accent);
+    margin-bottom: 0.6rem; display: block;
+  }
+  .section-title {
+    font-family: 'Roboto Serif', serif;
+    font-size: 1.35rem; font-weight: 400; line-height: 1.3;
+    color: var(--text-dark); margin-bottom: 0.5rem;
+  }
+  .section-desc {
+    font-size: 0.8rem; line-height: 1.7; color: var(--secondary);
+  }
+
+  /* ── FIELDS ── */
+  .field { margin-bottom: 1.75rem; }
+
+  .field-label {
+    display: block;
+    font-size: 0.6rem; font-weight: 700;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--primary); margin-bottom: 0.6rem;
+  }
+  .field-label .req { color: var(--error); margin-left: 2px; }
+  .field-hint {
+    font-size: 0.72rem; color: var(--accent);
+    margin-bottom: 0.6rem; display: block; font-style: italic;
+  }
+
+  input[type="text"],
+  input[type="date"],
+  input[type="url"],
+  textarea,
+  select {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--outline-variant);
+    border-radius: 0;
+    padding: 0.6rem 0;
+    font-family: 'Manrope', sans-serif;
+    font-size: 0.875rem;
+    color: var(--text-dark);
+    outline: none;
+    transition: border-color 0.25s ease, border-width 0.25s ease;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  input:focus, textarea:focus, select:focus {
+    border-bottom: 2px solid var(--primary);
+  }
+  textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
+  select { cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239b8b7a' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 0.25rem center; padding-right: 1.5rem; }
+
+  /* two column row */
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+
+  /* ── CHECKBOX / RADIO CUSTOM ── */
+  .options-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+  }
+  .options-grid.col3 { grid-template-columns: 1fr 1fr 1fr; }
+  .options-grid.col1 { grid-template-columns: 1fr; }
+
+  .option-item { position: relative; }
+  .option-item input { position: absolute; opacity: 0; width: 0; height: 0; }
+  .option-item label {
+    display: flex; align-items: center; gap: 0.65rem;
+    padding: 0.75rem 1rem;
+    background: var(--surface-lowest);
+    border: 1px solid var(--outline-variant);
+    cursor: pointer;
+    font-size: 0.8rem; color: var(--secondary);
+    transition: all 0.2s ease;
+    line-height: 1.3;
+  }
+  .option-item input:checked + label {
+    border-color: var(--primary);
+    background: var(--surface-low);
+    color: var(--text-dark);
+  }
+  .option-item label::before {
+    content: '';
+    flex-shrink: 0;
+    width: 14px; height: 14px;
+    border: 1px solid var(--outline-variant);
+    background: var(--surface);
+    transition: all 0.2s ease;
+  }
+  .option-item input:checked + label::before {
+    background: var(--primary);
+    border-color: var(--primary);
+    box-shadow: inset 0 0 0 2px var(--surface-lowest);
+  }
+
+  /* ── COLOR SWATCHES ── */
+  .color-palette {
+    display: flex; flex-wrap: wrap; gap: 0.5rem;
+    margin-top: 0.25rem;
+  }
+  .color-swatch-wrap { position: relative; }
+  .color-swatch-wrap input { position: absolute; opacity: 0; width: 0; height: 0; }
+  .color-swatch-wrap label {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 0.3rem; cursor: pointer;
+  }
+  .swatch {
+    width: 36px; height: 36px;
+    border: 2px solid transparent;
+    transition: transform 0.2s, border-color 0.2s;
+  }
+  .color-swatch-wrap input:checked + label .swatch {
+    border-color: var(--text-dark);
+    transform: scale(1.1);
+  }
+  .swatch-name {
+    font-size: 0.52rem; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--accent);
+  }
+
+  /* ── ITENS CHECKLIST ── */
+  .items-checklist {
+    display: flex; flex-direction: column; gap: 0.5rem;
+  }
+  .check-item { position: relative; }
+  .check-item input { position: absolute; opacity: 0; width: 0; height: 0; }
+  .check-item label {
+    display: flex; align-items: flex-start; gap: 0.85rem;
+    padding: 1rem 1.1rem;
+    background: var(--surface-lowest);
+    border: 1px solid var(--outline-variant);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .check-item input:checked + label {
+    border-color: var(--primary);
+    background: var(--surface-low);
+  }
+  .check-box {
+    flex-shrink: 0; margin-top: 1px;
+    width: 16px; height: 16px;
+    border: 1px solid var(--outline-variant);
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s ease;
+  }
+  .check-item input:checked + label .check-box {
+    background: var(--primary); border-color: var(--primary);
+  }
+  .check-box svg { width: 9px; height: 9px; stroke: white; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; opacity: 0; transition: opacity 0.2s; }
+  .check-item input:checked + label .check-box svg { opacity: 1; }
+  .check-label-text { font-size: 0.82rem; line-height: 1.4; color: var(--secondary); }
+  .check-label-text strong { color: var(--text-dark); font-weight: 600; font-size: 0.85rem; display: block; margin-bottom: 0.15rem; }
+  .check-item input:checked + label .check-label-text { color: var(--text-dark); }
+
+  /* ── RANGE SLIDER ── */
+  .range-wrap { position: relative; padding-bottom: 1.5rem; }
+  input[type="range"] {
+    width: 100%; -webkit-appearance: none; appearance: none;
+    height: 1px; background: var(--outline-variant);
+    outline: none; cursor: pointer;
+    border: none; border-radius: 0;
+    padding: 0;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none;
+    width: 16px; height: 16px;
+    background: var(--primary); cursor: pointer;
+    border: none; border-radius: 0;
+  }
+  .range-labels {
+    display: flex; justify-content: space-between;
+    position: absolute; bottom: 0; left: 0; right: 0;
+    font-size: 0.6rem; color: var(--accent);
+    letter-spacing: 0.08em;
+  }
+  .range-value {
+    text-align: center; margin-top: 0.5rem;
+    font-family: 'Roboto Serif', serif;
+    font-size: 0.85rem; font-style: italic; color: var(--primary);
+  }
+
+  /* ── NAVIGATION ── */
+  .form-nav {
+    display: flex; gap: 0.75rem; align-items: center;
+    margin-top: 2.5rem;
+  }
+  .btn-next {
+    flex: 1;
+    background: var(--primary); color: var(--on-primary);
+    font-family: 'Manrope', sans-serif;
+    font-size: 0.7rem; font-weight: 700;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    padding: 1.1rem 2rem; border: none; cursor: pointer;
+    transition: background 0.3s ease;
+    display: flex; align-items: center; justify-content: center; gap: 0.75rem;
+  }
+  .btn-next:hover { background: var(--text-dark); }
+  .btn-next svg { width: 13px; height: 13px; stroke: white; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .btn-back {
+    background: transparent;
+    border: 1px solid var(--outline-variant);
+    color: var(--accent); padding: 1.1rem 1.5rem;
+    font-family: 'Manrope', sans-serif;
+    font-size: 0.7rem; font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase; cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .btn-back:hover { border-color: var(--primary); color: var(--primary); }
+
+  /* ── SUCCESS ── */
+  .success-screen {
+    display: none; text-align: center;
+    padding: 4rem 1.75rem;
+    max-width: 560px; margin: 0 auto;
+    animation: fadeUp 0.7s ease forwards;
+  }
+  .success-screen.active { display: block; }
+  .success-icon {
+    width: 4rem; height: 4rem; margin: 0 auto 2rem;
+    color: var(--primary);
+  }
+  .success-icon svg { width: 100%; height: 100%; stroke: currentColor; fill: none; stroke-width: 1.2; stroke-linecap: round; stroke-linejoin: round; }
+  .success-title {
+    font-family: 'Roboto Serif', serif;
+    font-size: 2rem; font-weight: 300; line-height: 1.2;
+    margin-bottom: 1rem;
+  }
+  .success-title em { font-style: italic; color: var(--primary); }
+  .success-sub { font-size: 0.85rem; color: var(--secondary); line-height: 1.75; max-width: 320px; margin: 0 auto; }
+  .success-divider { width: 2.5rem; height: 1px; background: var(--primary); opacity: 0.3; margin: 2rem auto; }
+
+  /* ── DIVIDER ── */
+  .divider { width: 2.5rem; height: 1px; background: var(--primary); opacity: 0.35; margin: 1.5rem 0 2rem; }
+
+  /* ── FOOTER ── */
+  .footer {
+    max-width: 560px; margin: 0 auto;
+    padding: 1.25rem 1.75rem 2.5rem;
+    display: flex; justify-content: space-between;
+    border-top: 1px solid var(--outline-variant);
+  }
+  .footer-copy { font-size: 0.62rem; color: var(--accent); opacity: 0.65; letter-spacing: 0.05em; }
+
+  /* ── REFS NOTE ── */
+  .refs-note {
+    display: flex; align-items: center; gap: 0.85rem;
+    padding: 1rem 1.25rem;
+    background: var(--surface-low);
+    border: 1px solid var(--outline-variant);
+    margin-top: 0.25rem;
+  }
+  .refs-note svg { flex-shrink: 0; width: 1.1rem; height: 1.1rem; color: var(--primary); opacity: 0.7; }
+  .refs-note span {
+    font-family: 'Manrope', sans-serif;
+    font-size: 0.82rem; font-weight: 600;
+    color: var(--primary); letter-spacing: 0.04em;
+  }
+
+  /* ── SUBMIT STATE ── */
+  .btn-next:disabled { opacity: 0.6; cursor: not-allowed; }
+  .btn-next.loading { pointer-events: none; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-inner">
+    <div class="logo">Siqueira <span>Studio</span></div>
+    <div class="bookmark"></div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <p class="hero-eyebrow">Identidade Visual de Casamento</p>
+  <h1 class="hero-title">Briefing<br><em>dos Noivos</em></h1>
+  <p class="hero-sub">Cada resposta me ajuda a criar algo único para o dia mais especial de vocês. Leva cerca de 10 minutos.</p>
+</section>
+
+<!-- STEP INDICATOR -->
+<div class="step-indicator" id="stepIndicator"></div>
+
+<!-- FORM -->
+<div class="form-wrapper">
+<form id="briefingForm" novalidate>
+
+  <!-- ══ SEÇÃO 1 — OS NOIVOS ══ -->
+  <div class="form-section active" data-section="1">
+    <div class="section-header">
+      <span class="section-num">01 — 06</span>
+      <h2 class="section-title">Os Noivos</h2>
+      <p class="section-desc">Começa pelo mais importante: vocês dois.</p>
+    </div>
+    <div class="divider"></div>
+
+    <div class="field field-row">
+      <div>
+        <label class="field-label">Nome do Noivo <span class="req">*</span></label>
+        <input type="text" name="noivo" placeholder="ex: Rafael" required>
+      </div>
+      <div>
+        <label class="field-label">Nome da Noiva <span class="req">*</span></label>
+        <input type="text" name="noiva" placeholder="ex: Camila" required>
+      </div>
+    </div>
+
+    <div class="field field-row">
+      <div>
+        <label class="field-label">Iniciais para o Monograma</label>
+        <span class="field-hint">ex: R & C ou R.A.C</span>
+        <input type="text" name="monograma" placeholder="ex: R & C">
+      </div>
+      <div>
+        <label class="field-label">Data do Casamento <span class="req">*</span></label>
+        <input type="date" name="data_casamento" required>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Local / Espaço do Casamento</label>
+      <input type="text" name="local" placeholder="ex: Sítio das Hortências, Petrópolis RJ">
+    </div>
+
+    <div class="field">
+      <label class="field-label">Número de Convidados</label>
+      <div class="options-grid col3">
+        <div class="option-item"><input type="radio" name="convidados" id="c1" value="até 50"><label for="c1">Até 50</label></div>
+        <div class="option-item"><input type="radio" name="convidados" id="c2" value="50 a 150"><label for="c2">50 a 150</label></div>
+        <div class="option-item"><input type="radio" name="convidados" id="c3" value="150 a 300"><label for="c3">150 a 300</label></div>
+        <div class="option-item"><input type="radio" name="convidados" id="c4" value="300+"><label for="c4">300+</label></div>
+        <div class="option-item"><input type="radio" name="convidados" id="c5" value="prefiro não dizer"><label for="c5">Não sei ainda</label></div>
+      </div>
+    </div>
+
+    <div class="form-nav">
+      <button type="button" class="btn-next" onclick="nextSection()">
+        Próximo
+        <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ══ SEÇÃO 2 — ESTÉTICA ══ -->
+  <div class="form-section" data-section="2">
+    <div class="section-header">
+      <span class="section-num">02 — 06</span>
+      <h2 class="section-title">Estética & Mood</h2>
+      <p class="section-desc">Me conta o universo visual que vocês imaginam.</p>
+    </div>
+    <div class="divider"></div>
+
+    <div class="field">
+      <label class="field-label">Estilo Visual do Casamento <span class="req">*</span></label>
+      <span class="field-hint">Selecione quantos se encaixarem</span>
+      <div class="options-grid">
+        <div class="option-item"><input type="checkbox" name="estilo" id="e1" value="Romântico & Floral"><label for="e1">Romântico & Floral</label></div>
+        <div class="option-item"><input type="checkbox" name="estilo" id="e2" value="Rústico & Natural"><label for="e2">Rústico & Natural</label></div>
+        <div class="option-item"><input type="checkbox" name="estilo" id="e3" value="Moderno & Minimalista"><label for="e3">Moderno & Minimalista</label></div>
+        <div class="option-item"><input type="checkbox" name="estilo" id="e4" value="Clássico & Elegante"><label for="e4">Clássico & Elegante</label></div>
+        <div class="option-item"><input type="checkbox" name="estilo" id="e5" value="Boho & Livre"><label for="e5">Boho & Livre</label></div>
+        <div class="option-item"><input type="checkbox" name="estilo" id="e6" value="Luxo & Glamour"><label for="e6">Luxo & Glamour</label></div>
+        <div class="option-item"><input type="checkbox" name="estilo" id="e7" value="Fairy Tale & Encantado"><label for="e7">Fairy Tale</label></div>
+        <div class="option-item"><input type="checkbox" name="estilo" id="e8" value="Tropical & Vibrante"><label for="e8">Tropical & Vibrante</label></div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Período / Horário da Cerimônia</label>
+      <div class="options-grid col3">
+        <div class="option-item"><input type="radio" name="periodo" id="p1" value="Manhã"><label for="p1">Manhã</label></div>
+        <div class="option-item"><input type="radio" name="periodo" id="p2" value="Tarde"><label for="p2">Tarde</label></div>
+        <div class="option-item"><input type="radio" name="periodo" id="p3" value="Noite"><label for="p3">Noite</label></div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Paleta de Cores</label>
+      <span class="field-hint">Selecione as que mais combinam com a proposta</span>
+      <div class="color-palette">
+        <div class="color-swatch-wrap"><input type="checkbox" name="cor" id="cor1" value="Branco & Off-white"><label for="cor1"><div class="swatch" style="background:#f9f5f0;border:1px solid #e0d8ce;"></div><span class="swatch-name">Off-white</span></label></div>
+        <div class="color-swatch-wrap"><input type="checkbox" name="cor" id="cor2" value="Nude & Rosé"><label for="cor2"><div class="swatch" style="background:#e8c9bb;"></div><span class="swatch-name">Nude</span></label></div>
+        <div class="color-swatch-wrap"><input type="checkbox" name="cor" id="cor3" value="Rosa Antigo"><label for="cor3"><div class="swatch" style="background:#d4a5a5;"></div><span class="swatch-name">Rosa ant.</span></label></div>
+        <div class="color-swatch-wrap"><input type="checkbox" name="cor" id="cor4" value="Terracota"><label for="cor4"><div class="swatch" style="background:#c47c5a;"></div><span class="swatch-name">Terracota</span></label></div>
+        <div class="color-swatch-wrap"><input type="checkbox" name="cor" id="cor5" value="Sage & Verde Musgo"><label for="cor5"><div class="swatch" style="background:#8fa68a;"></div><span class="swatch-name">Sage</span></label></div>
+        <div class="color-swatch-wrap"><input type="checkbox" name="cor" id="cor6" value="Azul Serenity"><label for="cor6"><div class="swatch" style="background:#a8bcc8;"></div><span class="swatch-name">Serenity</span></label></div>
+        <div class="color-swatch-wrap"><input type="checkbox" name="cor" id="cor7" value="Dourado & Champagne"><label for="cor7"><div class="swatch" style="background:#c9aa71;"></div><span class="swatch-name">Dourado</span></label></div>
+        <div class="color-swatch-wrap"><input type="checkbox" name="cor" id="cor8" value="Preto & Branco"><label for="cor8"><div class="swatch" style="background:linear-gradient(to right,#1a1a1a 50%,#f5f5f5 50%);"></div><span class="swatch-name">P&B</span></label></div>
+        <div class="color-swatch-wrap"><input type="checkbox" name="cor" id="cor9" value="Lilás & Lavanda"><label for="cor9"><div class="swatch" style="background:#c5b4d4;"></div><span class="swatch-name">Lilás</span></label></div>
+        <div class="color-swatch-wrap"><input type="checkbox" name="cor" id="cor10" value="Bordo & Vinho"><label for="cor10"><div class="swatch" style="background:#7d3344;"></div><span class="swatch-name">Vinho</span></label></div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Cores específicas ou observações sobre a paleta</label>
+      <textarea name="cores_obs" placeholder="ex: queremos tons terrosos com um toque de dourado fosco…"></textarea>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Referências Visuais</label>
+      <div class="refs-note">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <span>Vou enviar no WhatsApp</span>
+      </div>
+    </div>
+
+    <div class="form-nav">
+      <button type="button" class="btn-back" onclick="prevSection()">Voltar</button>
+      <button type="button" class="btn-next" onclick="nextSection()">
+        Próximo
+        <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ══ SEÇÃO 3 — TIPOGRAFIA & TOM ══ -->
+  <div class="form-section" data-section="3">
+    <div class="section-header">
+      <span class="section-num">03 — 06</span>
+      <h2 class="section-title">Tipografia & Tom</h2>
+      <p class="section-desc">A personalidade visual passa muito pela escolha das letras.</p>
+    </div>
+    <div class="divider"></div>
+
+    <div class="field">
+      <label class="field-label">Estilo de Tipografia Preferido</label>
+      <div class="options-grid">
+        <div class="option-item"><input type="radio" name="tipografia" id="t1" value="Serif Elegante"><label for="t1" style="font-family: Georgia, serif; font-style: italic;">Serif Elegante</label></div>
+        <div class="option-item"><input type="radio" name="tipografia" id="t2" value="Script Manuscrito"><label for="t2" style="font-family: cursive;">Script & Manuscrito</label></div>
+        <div class="option-item"><input type="radio" name="tipografia" id="t3" value="Sans Moderno"><label for="t3" style="font-family: 'Manrope', sans-serif; letter-spacing: 0.1em; text-transform: uppercase; font-size: 0.7rem;">SANS MODERNO</label></div>
+        <div class="option-item"><input type="radio" name="tipografia" id="t4" value="Misto"><label for="t4">Misto — combinação</label></div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Tom da Comunicação</label>
+      <div class="options-grid">
+        <div class="option-item"><input type="radio" name="tom" id="tom1" value="Formal & Sofisticado"><label for="tom1">Formal & Sofisticado</label></div>
+        <div class="option-item"><input type="radio" name="tom" id="tom2" value="Leve & Descontraído"><label for="tom2">Leve & Descontraído</label></div>
+        <div class="option-item"><input type="radio" name="tom" id="tom3" value="Íntimo & Acolhedor"><label for="tom3">Íntimo & Acolhedor</label></div>
+        <div class="option-item"><input type="radio" name="tom" id="tom4" value="Grandioso & Celebrativo"><label for="tom4">Grandioso & Celebrativo</label></div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Há alguma frase, versículo ou trecho especial para os noivos?</label>
+      <span class="field-hint">Pode ser usada no convite, leque ou em peças especiais</span>
+      <textarea name="frase" placeholder="ex: "Onde você for, eu irei." — Rute 1:16"></textarea>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Descreva o casal em 3 palavras</label>
+      <span class="field-hint">Isso guia toda a direção criativa</span>
+      <input type="text" name="palavras" placeholder="ex: alegre, sofisticado, apaixonado">
+    </div>
+
+    <div class="form-nav">
+      <button type="button" class="btn-back" onclick="prevSection()">Voltar</button>
+      <button type="button" class="btn-next" onclick="nextSection()">
+        Próximo
+        <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ══ SEÇÃO 4 — ITENS DO PACOTE ══ -->
+  <div class="form-section" data-section="4">
+    <div class="section-header">
+      <span class="section-num">04 — 06</span>
+      <h2 class="section-title">Itens do Pacote</h2>
+      <p class="section-desc">Marque os itens contratados e adicione informações específicas de cada um.</p>
+    </div>
+    <div class="divider"></div>
+
+    <div class="field">
+      <label class="field-label">Itens Contratados <span class="req">*</span></label>
+      <div class="items-checklist">
+
+        <div class="check-item">
+          <input type="checkbox" name="item" id="i1" value="Monograma">
+          <label for="i1">
+            <div class="check-box"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></div>
+            <div class="check-label-text">
+              <strong>Monograma com Iniciais</strong>
+              Símbolo exclusivo com as iniciais dos noivos — assinatura da identidade do casamento
+            </div>
+          </label>
+        </div>
+
+        <div class="check-item">
+          <input type="checkbox" name="item" id="i2" value="Moodboard">
+          <label for="i2">
+            <div class="check-box"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></div>
+            <div class="check-label-text">
+              <strong>Moodboard Estético</strong>
+              Painel visual com a direção criativa do casamento — referências, texturas e humor
+            </div>
+          </label>
+        </div>
+
+        <div class="check-item">
+          <input type="checkbox" name="item" id="i3" value="Paleta de Cores">
+          <label for="i3">
+            <div class="check-box"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></div>
+            <div class="check-label-text">
+              <strong>Paleta de Cores Completa</strong>
+              Cores oficiais do casamento com códigos Hex, RGB e Pantone
+            </div>
+          </label>
+        </div>
+
+        <div class="check-item">
+          <input type="checkbox" name="item" id="i4" value="Convite Digital">
+          <label for="i4">
+            <div class="check-box"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></div>
+            <div class="check-label-text">
+              <strong>Convite Digital</strong>
+              Para envio por WhatsApp e redes sociais — otimizado para mobile
+            </div>
+          </label>
+        </div>
+
+        <div class="check-item">
+          <input type="checkbox" name="item" id="i5" value="Convite Físico">
+          <label for="i5">
+            <div class="check-box"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></div>
+            <div class="check-label-text">
+              <strong>Convite Físico</strong>
+              Arte para impressão — frente e verso, com indicação de papel e gráfica
+            </div>
+          </label>
+        </div>
+
+        <div class="check-item">
+          <input type="checkbox" name="item" id="i6" value="Menu">
+          <label for="i6">
+            <div class="check-box"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></div>
+            <div class="check-label-text">
+              <strong>Menu da Recepção</strong>
+              Cardápio elegante para mesas — entrada, prato principal e sobremesa
+            </div>
+          </label>
+        </div>
+
+        <div class="check-item">
+          <input type="checkbox" name="item" id="i7" value="Manual dos Padrinhos">
+          <label for="i7">
+            <div class="check-box"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></div>
+            <div class="check-label-text">
+              <strong>Manual dos Padrinhos</strong>
+              Guia completo com funções, trajes, cronograma e dicas para os padrinhos
+            </div>
+          </label>
+        </div>
+
+        <div class="check-item">
+          <input type="checkbox" name="item" id="i8" value="Menu Drink">
+          <label for="i8">
+            <div class="check-box"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></div>
+            <div class="check-label-text">
+              <strong>Menu de Drinks</strong>
+              Carta do bar com drinques assinatura, vinhos e não alcoólicos
+            </div>
+          </label>
+        </div>
+
+        <div class="check-item">
+          <input type="checkbox" name="item" id="i9" value="Placas de Mesa">
+          <label for="i9">
+            <div class="check-box"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></div>
+            <div class="check-label-text">
+              <strong>Placas de Mesa</strong>
+              Identificação das mesas — número ou nomes — para impressão
+            </div>
+          </label>
+        </div>
+
+        <div class="check-item">
+          <input type="checkbox" name="item" id="i10" value="Leque">
+          <label for="i10">
+            <div class="check-box"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></div>
+            <div class="check-label-text">
+              <strong>Leque / Abano para Cerimônia</strong>
+              Papel no formato de leque para os convidados — funcional e decorativo
+            </div>
+          </label>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Algum item adicional não listado acima?</label>
+      <textarea name="itens_extras" placeholder="ex: tag para lembrancinha, crachá de identificação, banner…"></textarea>
+    </div>
+
+    <div class="form-nav">
+      <button type="button" class="btn-back" onclick="prevSection()">Voltar</button>
+      <button type="button" class="btn-next" onclick="nextSection()">
+        Próximo
+        <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ══ SEÇÃO 5 — DETALHES DOS ITENS ══ -->
+  <div class="form-section" data-section="5">
+    <div class="section-header">
+      <span class="section-num">05 — 06</span>
+      <h2 class="section-title">Detalhes & Textos</h2>
+      <p class="section-desc">Informações que vão direto para as peças — quanto mais detalhe, melhor o resultado.</p>
+    </div>
+    <div class="divider"></div>
+
+    <div class="field">
+      <label class="field-label">Texto do Convite</label>
+      <span class="field-hint">Nome completo dos noivos, dos pais (se for incluir), horário e endereço da cerimônia e recepção</span>
+      <textarea name="texto_convite" rows="5" placeholder="ex: Rafaela Lima e João Vitor Siqueira&#10;Convidam para a celebração de seu casamento&#10;Dia 14 de setembro de 2025, às 17h&#10;Paróquia Nossa Senhora…"></textarea>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Cardápio — Entrada / Prato / Sobremesa</label>
+      <textarea name="cardapio" placeholder="ex: Entrada: Bruschetta de tomate e brie&#10;Prato: Medalhão ao molho de vinho com risoto&#10;Sobremesa: Petit gâteau com sorvete de baunilha"></textarea>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Drinks Assinatura do Casal</label>
+      <span class="field-hint">Nome e ingredientes, se já tiver definido</span>
+      <textarea name="drinks" placeholder="ex: "Camila & Rafael" — gin, limão siciliano, água tônica, manjericão"></textarea>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Nomes dos Padrinhos e Madrinhas</label>
+      <span class="field-hint">Para o manual dos padrinhos</span>
+      <textarea name="padrinhos" placeholder="ex: João e Ana, Marcos e Juliana, Pedro e Camila…"></textarea>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Identificação das Mesas</label>
+      <div class="options-grid col3">
+        <div class="option-item"><input type="radio" name="mesas" id="m1" value="Números"><label for="m1">Números</label></div>
+        <div class="option-item"><input type="radio" name="mesas" id="m2" value="Nomes"><label for="m2">Nomes</label></div>
+        <div class="option-item"><input type="radio" name="mesas" id="m3" value="Flores"><label for="m3">Flores</label></div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Quantidade de Mesas</label>
+      <input type="text" name="qtd_mesas" placeholder="ex: 15 mesas">
+    </div>
+
+    <div class="field">
+      <label class="field-label">Quantidade de Leques / Abanos</label>
+      <input type="text" name="qtd_leques" placeholder="ex: 150 unidades">
+    </div>
+
+    <div class="form-nav">
+      <button type="button" class="btn-back" onclick="prevSection()">Voltar</button>
+      <button type="button" class="btn-next" onclick="nextSection()">
+        Próximo
+        <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ══ SEÇÃO 6 — ÚLTIMAS OBSERVAÇÕES ══ -->
+  <div class="form-section" data-section="6">
+    <div class="section-header">
+      <span class="section-num">06 — 06</span>
+      <h2 class="section-title">Para Finalizar</h2>
+      <p class="section-desc">Últimas informações antes de eu começar a criar.</p>
+    </div>
+    <div class="divider"></div>
+
+    <div class="field">
+      <label class="field-label">Como você descobriu o Siqueira Studio?</label>
+      <div class="options-grid">
+        <div class="option-item"><input type="radio" name="origem" id="o1" value="Instagram"><label for="o1">Instagram</label></div>
+        <div class="option-item"><input type="radio" name="origem" id="o2" value="Indicação"><label for="o2">Indicação</label></div>
+        <div class="option-item"><input type="radio" name="origem" id="o3" value="Google"><label for="o3">Google</label></div>
+        <div class="option-item"><input type="radio" name="origem" id="o4" value="Outro"><label for="o4">Outro</label></div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Prazo de Entrega Esperado</label>
+      <div class="options-grid col3">
+        <div class="option-item"><input type="radio" name="prazo" id="pr1" value="Urgente (até 7 dias)"><label for="pr1">Urgente</label></div>
+        <div class="option-item"><input type="radio" name="prazo" id="pr2" value="Normal (15 dias)"><label for="pr2">Normal</label></div>
+        <div class="option-item"><input type="radio" name="prazo" id="pr3" value="Tranquilo (30+ dias)"><label for="pr3">Tranquilo</label></div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Já possui alguma arte ou elemento da identidade?</label>
+      <span class="field-hint">Ex: logo, fonte específica, elemento gráfico pré-definido</span>
+      <div class="options-grid col3">
+        <div class="option-item"><input type="radio" name="tem_arte" id="a1" value="Sim"><label for="a1">Sim</label></div>
+        <div class="option-item"><input type="radio" name="tem_arte" id="a2" value="Não"><label for="a2">Não</label></div>
+        <div class="option-item"><input type="radio" name="tem_arte" id="a3" value="Parcialmente"><label for="a3">Parcialmente</label></div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Algo que NÃO quer ver na identidade?</label>
+      <span class="field-hint">Cores, estilos, elementos que definitivamente fogem do que vocês imaginam</span>
+      <textarea name="nao_quero" placeholder="ex: não quero nada muito infantil, nem muito moderno — queremos algo atemporal"></textarea>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Observações Gerais</label>
+      <textarea name="obs" rows="4" placeholder="Alguma informação adicional, dúvida ou detalhe que eu deva saber…"></textarea>
+    </div>
+
+    <div class="form-nav">
+      <button type="button" class="btn-back" onclick="prevSection()">Voltar</button>
+      <button type="button" class="btn-next" onclick="submitForm()" style="background:var(--text-dark);">
+        Enviar Briefing
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      </button>
+    </div>
+  </div>
+
+</form>
+
+<!-- SUCCESS -->
+<div class="success-screen" id="successScreen">
+  <div class="success-icon">
+    <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+  </div>
+  <h2 class="success-title">Briefing<br><em>recebido!</em></h2>
+  <div class="success-divider"></div>
+  <p class="success-sub">Obrigado por confiar no Siqueira Studio para o dia mais especial de vocês. Vou analisar cada detalhe com cuidado e entrar em contato em breve.</p>
+</div>
+
+</div><!-- /form-wrapper -->
+
+<!-- FOOTER -->
+<footer class="footer">
+  <span class="footer-copy">@2026 || siqueira.studio</span>
+  <span class="footer-copy" style="opacity:0.4;">design com propósito</span>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  // ── SUPABASE CONFIG ──────────────────────────────────────────
+  // Substitua pelos seus valores em https://supabase.com/dashboard
+  const SUPABASE_URL = 'https://SEU_PROJECT_ID.supabase.co';
+  const SUPABASE_KEY = 'SUA_ANON_KEY';
+  const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  // ─────────────────────────────────────────────────────────────
+
+  const TOTAL = 6;
+  let current = 1;
+
+  // ── BUILD STEP INDICATORS ──
+  function buildSteps() {
+    const labels = ['Noivos','Estética','Tipografia','Itens','Detalhes','Finalizar'];
+    const wrap = document.getElementById('stepIndicator');
+    wrap.innerHTML = '';
+    for (let i = 1; i <= TOTAL; i++) {
+      const pip = document.createElement('div');
+      pip.className = 'step-pip';
+      pip.id = 'pip-' + i;
+      pip.innerHTML = `<span class="step-pip-label">${labels[i-1]}</span>`;
+      wrap.appendChild(pip);
+    }
+    updateSteps();
+  }
+
+  function updateSteps() {
+    for (let i = 1; i <= TOTAL; i++) {
+      const pip = document.getElementById('pip-' + i);
+      pip.className = 'step-pip';
+      if (i < current) pip.classList.add('done');
+      if (i === current) pip.classList.add('active');
+    }
+    const pct = ((current - 1) / (TOTAL - 1)) * 100;
+    document.getElementById('progressBar').style.width = pct + '%';
+  }
+
+  function showSection(n) {
+    document.querySelectorAll('.form-section').forEach(s => s.classList.remove('active'));
+    const target = document.querySelector(`[data-section="${n}"]`);
+    if (target) { target.classList.add('active'); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+    updateSteps();
+  }
+
+  function nextSection() { if (current < TOTAL) { current++; showSection(current); } }
+  function prevSection() { if (current > 1) { current--; showSection(current); } }
+
+  // ── COLLECT FORM DATA ──
+  function collectData() {
+    const get = (name) => {
+      const el = document.querySelector(`[name="${name}"]`);
+      return el ? el.value.trim() : '';
+    };
+    const getRadio = (name) => {
+      const el = document.querySelector(`[name="${name}"]:checked`);
+      return el ? el.value : null;
+    };
+    const getChecks = (name) => {
+      return [...document.querySelectorAll(`[name="${name}"]:checked`)].map(el => el.value);
+    };
+
+    return {
+      // Seção 1 — Os Noivos
+      noivo:            get('noivo'),
+      noiva:            get('noiva'),
+      monograma:        get('monograma'),
+      data_casamento:   get('data_casamento') || null,
+      local_casamento:  get('local'),
+      qtd_convidados:   getRadio('convidados'),
+
+      // Seção 2 — Estética
+      estilos_visuais:  getChecks('estilo'),
+      periodo:          getRadio('periodo'),
+      cores_paleta:     getChecks('cor'),
+      cores_obs:        get('cores_obs'),
+      referencias_obs:  'Enviará pelo WhatsApp',
+
+      // Seção 3 — Tipografia
+      tipografia:       getRadio('tipografia'),
+      tom:              getRadio('tom'),
+      frase_especial:   get('frase'),
+      palavras_casal:   get('palavras'),
+
+      // Seção 4 — Itens
+      itens_contratados: getChecks('item'),
+      itens_extras:      get('itens_extras'),
+
+      // Seção 5 — Detalhes
+      texto_convite:    get('texto_convite'),
+      cardapio:         get('cardapio'),
+      drinks:           get('drinks'),
+      padrinhos:        get('padrinhos'),
+      identificacao_mesas: getRadio('mesas'),
+      qtd_mesas:        get('qtd_mesas'),
+      qtd_leques:       get('qtd_leques'),
+
+      // Seção 6 — Final
+      origem:           getRadio('origem'),
+      prazo:            getRadio('prazo'),
+      tem_arte:         getRadio('tem_arte'),
+      nao_quero:        get('nao_quero'),
+      observacoes:      get('obs'),
+
+      // Metadados
+      status:           'novo',
+      criado_em:        new Date().toISOString(),
+    };
+  }
+
+  // ── SUBMIT ──
+  async function submitForm() {
+    const btn = document.querySelector('[onclick="submitForm()"]');
+    btn.disabled = true;
+    btn.classList.add('loading');
+    btn.innerHTML = `
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+        <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+      </svg>
+      Enviando…`;
+
+    const data = collectData();
+
+    // Validação mínima
+    if (!data.noivo || !data.noiva) {
+      alert('Por favor, preencha o nome dos noivos antes de enviar.');
+      btn.disabled = false;
+      btn.classList.remove('loading');
+      btn.innerHTML = `Enviar Briefing <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
+      return;
+    }
+
+    try {
+      const { error } = await sb.from('briefings_casamento').insert([data]);
+
+      if (error) throw error;
+
+      // Sucesso
+      document.getElementById('briefingForm').style.display = 'none';
+      document.getElementById('stepIndicator').style.display = 'none';
+      document.getElementById('successScreen').classList.add('active');
+      document.getElementById('progressBar').style.width = '100%';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    } catch (err) {
+      console.error('Erro Supabase:', err);
+      alert('Ocorreu um erro ao enviar. Por favor, tente novamente ou entre em contato pelo WhatsApp.');
+      btn.disabled = false;
+      btn.classList.remove('loading');
+      btn.innerHTML = `Enviar Briefing <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
+    }
+  }
+
+  window.addEventListener('scroll', () => {
+    if (document.getElementById('successScreen').classList.contains('active')) return;
+    const pct = ((current - 1) / (TOTAL - 1)) * 100;
+    document.getElementById('progressBar').style.width = pct + '%';
+  });
+
+  buildSteps();
+</script>
+</body>
+</html>

@@ -889,18 +889,15 @@
   <span class="footer-copy" style="opacity:0.4;">design com propósito</span>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script>
-  // ── SUPABASE CONFIG ──────────────────────────────────────────
-  const SUPABASE_URL = 'https://hslnuqqgcxhnvndxdpua.supabase.co';
-  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhzbG51cXFnY3hobnZuZHhkcHVhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ1NjgxNjksImV4cCI6MjA5MDE0NDE2OX0.muQLdA42DJOejrcvWCbc632FSlDyzXhBuSLL-11wnTg';
-  const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  // ── GOOGLE APPS SCRIPT ENDPOINT ─────────────────────────────
+  // Após criar o Apps Script, cole a URL do Web App aqui:
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxeY7IoFu8qQGOUhrKGZiZKjb0XJV7OCWQAktK0oje3lFpNaGGH6grko4-2HLLYrBH-/exec';
   // ─────────────────────────────────────────────────────────────
 
   const TOTAL = 6;
   let current = 1;
 
-  // ── BUILD STEP INDICATORS ──
   function buildSteps() {
     const labels = ['Noivos','Estética','Tipografia','Itens','Detalhes','Finalizar'];
     const wrap = document.getElementById('stepIndicator');
@@ -936,7 +933,6 @@
   function nextSection() { if (current < TOTAL) { current++; showSection(current); } }
   function prevSection() { if (current > 1) { current--; showSection(current); } }
 
-  // ── COLLECT FORM DATA ──
   function collectData() {
     const get = (name) => {
       const el = document.querySelector(`[name="${name}"]`);
@@ -944,91 +940,70 @@
     };
     const getRadio = (name) => {
       const el = document.querySelector(`[name="${name}"]:checked`);
-      return el ? el.value : null;
+      return el ? el.value : '';
     };
     const getChecks = (name) => {
-      return [...document.querySelectorAll(`[name="${name}"]:checked`)].map(el => el.value);
+      return [...document.querySelectorAll(`[name="${name}"]:checked`)]
+        .map(el => el.value).join(', ');
     };
 
     return {
-      // Seção 1 — Os Noivos
-      noivo:            get('noivo'),
-      noiva:            get('noiva'),
-      monograma:        get('monograma'),
-      data_casamento:   get('data_casamento') || null,
-      local_casamento:  get('local'),
-      qtd_convidados:   getRadio('convidados'),
-
-      // Seção 2 — Estética
-      estilos_visuais:  getChecks('estilo'),
-      periodo:          getRadio('periodo'),
-      cores_paleta:     getChecks('cor'),
-      cores_obs:        get('cores_obs'),
-      referencias_obs:  'Enviará pelo WhatsApp',
-
-      // Seção 3 — Tipografia
-      tipografia:       getRadio('tipografia'),
-      tom:              getRadio('tom'),
-      frase_especial:   get('frase'),
-      palavras_casal:   get('palavras'),
-
-      // Seção 4 — Itens
-      itens_contratados: getChecks('item'),
-      itens_extras:      get('itens_extras'),
-
-      // Seção 5 — Detalhes
-      texto_convite:    get('texto_convite'),
-      cardapio:         get('cardapio'),
-      drinks:           get('drinks'),
-      padrinhos:        get('padrinhos'),
-      identificacao_mesas: getRadio('mesas'),
-      qtd_mesas:        get('qtd_mesas'),
-      qtd_leques:       get('qtd_leques'),
-
-      // Seção 6 — Final
-      origem:           getRadio('origem'),
-      prazo:            getRadio('prazo'),
-      tem_arte:         getRadio('tem_arte'),
-      nao_quero:        get('nao_quero'),
-      observacoes:      get('obs'),
-
-      // Metadados
-      status:           'novo',
-      criado_em:        new Date().toISOString(),
+      data_envio:           new Date().toLocaleString('pt-BR'),
+      noivo:                get('noivo'),
+      noiva:                get('noiva'),
+      monograma:            get('monograma'),
+      data_casamento:       get('data_casamento'),
+      local_casamento:      get('local'),
+      qtd_convidados:       getRadio('convidados'),
+      estilos_visuais:      getChecks('estilo'),
+      periodo:              getRadio('periodo'),
+      cores_paleta:         getChecks('cor'),
+      cores_obs:            get('cores_obs'),
+      referencias:          'Enviará pelo WhatsApp',
+      tipografia:           getRadio('tipografia'),
+      tom:                  getRadio('tom'),
+      frase_especial:       get('frase'),
+      palavras_casal:       get('palavras'),
+      itens_contratados:    getChecks('item'),
+      itens_extras:         get('itens_extras'),
+      texto_convite:        get('texto_convite'),
+      cardapio:             get('cardapio'),
+      drinks:               get('drinks'),
+      padrinhos:            get('padrinhos'),
+      identificacao_mesas:  getRadio('mesas'),
+      qtd_mesas:            get('qtd_mesas'),
+      qtd_leques:           get('qtd_leques'),
+      origem:               getRadio('origem'),
+      prazo:                getRadio('prazo'),
+      tem_arte:             getRadio('tem_arte'),
+      nao_quero:            get('nao_quero'),
+      observacoes:          get('obs'),
     };
   }
 
-  // ── SUBMIT ──
   async function submitForm() {
     const btn = document.querySelector('[onclick="submitForm()"]');
     btn.disabled = true;
-    btn.classList.add('loading');
-    btn.innerHTML = `
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
-        <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
-      </svg>
-      Enviando…`;
+    btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg> Enviando…`;
 
     const data = collectData();
 
-    // Validação mínima
     if (!data.noivo || !data.noiva) {
       alert('Por favor, preencha o nome dos noivos antes de enviar.');
       btn.disabled = false;
-      btn.classList.remove('loading');
       btn.innerHTML = `Enviar Briefing <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
       return;
     }
 
     try {
-      const { data, error } = await sb.from('briefings_casamento').insert([data]);
+      await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
 
-      if (error) {
-        console.error('Supabase error:', JSON.stringify(error, null, 2));
-        throw new Error(error.message || JSON.stringify(error));
-      }
-
-      // Sucesso
+      // no-cors não retorna resposta legível — se não lançou erro, consideramos sucesso
       document.getElementById('briefingForm').style.display = 'none';
       document.getElementById('stepIndicator').style.display = 'none';
       document.getElementById('successScreen').classList.add('active');
@@ -1036,10 +1011,8 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
 
     } catch (err) {
-      console.error('Erro completo:', err);
-      alert('Erro ao enviar: ' + err.message + '\n\nVeja o console (F12) para detalhes.');
+      alert('Erro ao enviar. Verifique sua conexão e tente novamente.');
       btn.disabled = false;
-      btn.classList.remove('loading');
       btn.innerHTML = `Enviar Briefing <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
     }
   }
